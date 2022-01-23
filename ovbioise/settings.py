@@ -21,10 +21,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '=o4#8yi5faj0z*9ef09oit69s05_4xmocyw%ip0^u5sq*1*s#$'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -90,11 +90,11 @@ WSGI_APPLICATION = 'ovbioise.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'peter_db',
-        'USER': 'root',
-        'PASSWORD':'',
-        'HOST': '',
-        'PORT': '',
+        'NAME': config('DB_NAME'),
+        'USER': config('USER'),
+        'PASSWORD':config('PASSWORD'),
+        'HOST': config('HOST'),
+        'PORT': config('PORT'),
         'OPTIONS': {
             'init_command':"SET sql_mode='STRICT_TRANS_TABLES'"
         }
