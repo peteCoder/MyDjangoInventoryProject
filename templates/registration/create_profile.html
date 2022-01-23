@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Add Profile</title>
+
+    <link rel="icon" href="{% static 'sb-bootstrap/img/rx 3 favicon1.png' %}">
+
+    <!-- custom css style -->
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/css/login.css' %}">
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'sb-bootstrap/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'sb-bootstrap/css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+    <style type="text/css">
+    body {
+        overflow-y: scroll;
+        background: black !important;
+    }
+
+    p {
+        font-size: 13px;
+    }
+
+    .radioBtn label {
+        font-size: 14px;
+    }
+
+    ul{
+        list-style: none;
+    }
+
+    .form{
+			display: flex;
+			flex-direction: column;
+			width: 30%;
+		}
+
+	.red{
+		color: red !important;
+		background: blue;
+		list-style: none;
+
+	}
+    #id_image{
+        display: none;
+
+    }
+
+    #fileBtn{
+        max-width: 11rem;
+
+    }
+    .display-center{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    </style>
+
+<body class="bg-gradient-danger">
+    <div class="container">
+
+        <div class="card border-0 shadow-lg my-2">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image">
+                        <img alt="register-image" src="{% static 'sb-bootstrap/img/Supermarket workers-bro.png' %}" width="500">
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Add Profile</h1>
+                            </div>
+                            
+                            <form class="user" method="POST" enctype="multipart/form-data">
+                                {% for field in form %}
+                                {% for error in field.errors %}
+                                    <p style="color: red; line-height: 2px; font-size: 14px; text-align: center">{{error|escape}}</p>
+                                {% endfor %}
+
+                            	{% endfor %}
+                                {% csrf_token %}
+
+                                
+                                
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                           {{form.first_name}}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        {{form.last_name}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{form.phone_number}}
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        {{ form.address }}
+                                    </div> 
+                                    <div class="col-sm-6">
+	                                        {{ form.birth_date }}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form.image }}
+                                </div>
+                                <div class="form-group display-center">
+                                    <button id="fileBtn" class="btn btn-danger btn-user btn-block" >Upload Profile Pic</button>
+                                    <br>
+                                    
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                           {{form.gender}}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        {{form.position}}
+                                    </div>
+                                </div>
+
+
+                               
+                                <button class="btn btn-primary btn-user btn-block">
+                                    Add Profile
+                                </button>
+                            </form>
+                            <hr>
+                             {% if request.user.is_authenticated %}
+                            <!-- <div class="text-center">
+                               <a class="small" href="{% url 'change-password' %}">Change Password?</a>
+                            </div> -->
+                            {% endif %}
+                            <!-- <div class="text-center">
+                                <a class="small" href="{% url 'navigation' %}">Skip for now?</a>
+                            </div> -->
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        const fileBtn = document.querySelector('#fileBtn')
+        const imageSelect = document.querySelector('#id_image')
+        fileBtn.onclick = (e) =>{
+            e.preventDefault();
+            imageSelect.click()
+        }
+    </script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'sb-bootstrap/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'sb-bootstrap/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'sb-bootstrap/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'sb-bootstrap/js/sb-admin-2.js' %}"></script>
+
+   <!--  <script src="{% static 'sb-bootstrap\js\sb-admin-2.js' %}"></script> -->

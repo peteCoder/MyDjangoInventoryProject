@@ -1,0 +1,16 @@
+*{
+    outline: none;
+}
+
+.select2-search__field{
+    outline: none;
+}
+
+.small {
+    font-size: 14px !important;
+}
+
+table, tr {
+    font-size: 13px;
+    margin-bottom: 12px;
+}

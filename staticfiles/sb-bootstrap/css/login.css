@@ -1,0 +1,18 @@
+.login-img {
+    background-image: url(../img/avinash-kumar-LdxBEjhLW5E-unsplash.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.extra-padding {
+    paddding-top: 45px;
+}
+
+.footer-text {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-right: 20px;
+}
+

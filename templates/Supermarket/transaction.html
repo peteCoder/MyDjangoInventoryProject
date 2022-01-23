@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Transaction History</title>
+
+    <link rel="icon" href="{% static 'sb-bootstrap/img/rx 3 favicon1.png' %}">
+
+    <!-- custom css style -->
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/css/inventory.css' %}"> 
+
+    <!-- custom css style for product -->
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/css/product.css' %}">
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'sb-bootstrap/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'sb-bootstrap/css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2.css' %}">
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2-bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/custom.css' %}">
+
+    <script src="{% static 'sb-bootstrap/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'select2/dist/js/select2.js' %}"></script>
+
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+ <!-- Sidebar -->
+ {% include 'sup_sidebar.html' %}
+
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+        <!-- Topbar -->
+        {% include 'sup_navbar.html' %}
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div class="{{message.tags}}" style="font-size: 14px;">
+                        {{message}}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                  <br/>
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800 font-weight-bold">
+                            Transaction History
+                        </h1>
+                    </div>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div class="container-fluid">
+                <div class="d-flex justify-content-end">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button class="btn btn-sm btn-success mb-2 mr-2" name="transactionPDF">
+                            Transaction Report
+                        </button>
+                    </form>
+
+                    <a class="btn btn-sm btn-success mb-2 mr-2" href="#" data-toggle="modal"
+                    data-target="#TransactionreportModal">
+                        Transaction Report by Date
+                    </a>
+
+                    {% if request.user.profile.position == 'manager' %}
+                    <a class="btn btn-sm btn-primary mb-2 mr-2" href="{% url 'super:receiving' %}" >
+                    <i class="fas fa-plus"></i>
+                        New Supply
+                    </a>
+                    {% endif %}
+
+                    {% if request.user.profile.position == 'cashier' %}
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle btn btn-sm btn-success mb-2 mr-2" href="#" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                            
+                            <i class="fas fa-plus"></i>
+                            New Sales
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="{% url 'super:pos' %}">Retail Sale</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'super:wholesale_pos' %}">Wholesale Sale</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            
+                </div>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 bg-gradient-success">
+                        <h6 class="m-0 font-weight-bold text-white">Recent Transactions</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table py-4" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Transaction Type</th>
+                                        <th class="text-center">Estimated Amount</th>
+                                        <th class="text-center">Actual Amount</th>
+                                        <th class="text-center">Discount</th>
+                                        <th class="text-center">Change</th>
+                                        <th class="text-center">Date</th>
+                                        
+                                    </tr>
+                                </thead>
+                        
+                                <tbody>
+                                  {% for transaction in transactions %}
+                                    <tr> 
+                                        <td class="text-center">{{forloop.counter}}</td>
+                                        <td class="text-center">{{transaction.transaction_type}}</td>
+                                        <td class="text-center">&#8358; {{transaction.total_amount}}</td>
+                                        <td class="text-center">&#8358; {{transaction.amount_received}}</td>
+                                        <td class="text-center">&#8358; {{transaction.discount}}</td>
+                                        <td class="text-center">&#8358; {{transaction.change}}</td>
+                                        <td class="text-center">{{transaction.date}}</td>
+                                        
+                                    </tr>
+                                  {% endfor %}
+
+                                    
+                                </tbody>
+                            </table>
+            </div>
+            
+            <!-- /.container-fluid -->
+                    
+  
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+     <!-- Sales Report Modal-->
+     <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        </div>
+     </div>
+
+          <!-- Wholesale Sales Report Modal-->
+          <div class="modal fade" id="TransactionreportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title bold text-success" id="exampleModalLabel">GENERATE TRANSACTION REPORT FOR</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body bg-success">
+                        <div class="card shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="mb-0 font-weight-bold  text-danger ">
+                                
+                                        <div>
+                                            <input name="TransactionDate" type="date" class="form-control form-control-user w-100" >
+                                        <p class="text-muted text-center text-primary">Select Date </p>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                        <div class="modal-footer bg-gray">
+                            <a href="" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</a>
+                            <button name="TransactionPrint" class="btn btn-success btn-sm">
+                            <i class="fas fa-print"></i>
+                            Print
+                            </button>
+                        </div>
+
+                </form>
+                  </div>
+                  
+              </div>
+          </div>
+ </div>
+
+    <!-- For Logout Popup -->
+
+    {% include 'logout_popup.html' %}
+
+
+
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+    </script>
+
+
+    <!-- Bootstrap core JavaScript-->
+<script src="{% static 'sb-bootstrap/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'sb-bootstrap/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+
+<!-- Custom Select JS -->
+<script src="{% static 'select2/dist/js/select2.min.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'sb-bootstrap/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'sb-bootstrap\js\sb-admin-2.js' %}"></script>
+
+
+<!-- Page level plugins -->
+<script src="{% static 'sb-bootstrap/vendor/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'sb-bootstrap/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'sb-bootstrap/js/demo/datatables-demo.js' %}"></script>
+
+
+<!--  <script src="{% static 'sb-bootstrap\js\sb-admin-2.js' %}"></script> -->
+
+
+</body>
+
+</html>

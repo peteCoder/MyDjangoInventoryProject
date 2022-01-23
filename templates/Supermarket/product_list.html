@@ -1,0 +1,486 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Products</title>
+
+    <link rel="icon" href="{% static 'sb-bootstrap/img/rx 3 favicon1.png' %}">
+
+    <!-- custom css style -->
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/css/inventory.css' %}"> 
+
+    <!-- custom css style for product -->
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/css/product.css' %}">
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'sb-bootstrap/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'sb-bootstrap/css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2.css' %}">
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2-bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/custom.css' %}">
+
+    <script src="{% static 'sb-bootstrap/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'select2/dist/js/select2.js' %}"></script>
+
+
+</head>
+
+
+</head>
+
+<body id="page-top">
+ 
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+ <!-- Sidebar -->
+ {% include 'sup_sidebar.html' %}
+
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+        <!-- Topbar -->
+        {% include 'sup_navbar.html' %}
+        <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div class="{{message.tags}}" style="font-size: 14px;">
+                        {{message}}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                  <br/>
+
+          
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800 font-weight-bold">
+                            Product
+                        </h1>
+                    </div>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div class="container-fluid">
+                <div class="d-flex justify-content-end">
+
+                    <!-- Button Modal Trigger -->
+
+                    <form method="POST">
+                      {% csrf_token %}
+                      <button name="csvDownload" class="small btn btn-primary my-2 mr-3">
+                        <i class="fas fa-table"></i> 
+                         Import to Excel
+                     </button>
+                    </form>
+                    
+                      
+
+                    <form method="POST">
+                        {% csrf_token %}
+                         <button name="pdfDownload" class="small btn btn-success my-2 mr-3">
+                            <i class="fas fa-print"></i> 
+                             Print List
+                         </button>
+                    </form>
+                    {% if request.user.profile.position == 'manager' %}
+                     <button href="#" type="button" class="small btn btn-success my-2 mr-3" data-toggle="modal"
+                     data-target="#exampleModalCategory">
+                         <i class="fas fa-plus"></i>
+                         Add New Category
+                        </button>
+
+                        <button href="#" type="button" class="small btn btn-success my-2 mr-3" data-toggle="modal"
+                        data-target="#exampleModalType">
+                            <i class="fas fa-plus"></i>
+                            Add New Type
+                           </button>
+
+                    <button class="small btn btn-success my-2" data-toggle="modal"
+                    data-target="#exampleModalCenter">
+                        <i class="fas fa-plus"></i>
+                        Add New Item</button>
+                    {% endif %}
+                </div>
+
+
+                 <!-- New Item Modal Button-->
+                 <div class="modal fade" id="exampleModalCategory" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                 <div class="modal-dialog modal-dialog-centered" role="document">
+                     <div class="modal-content">
+                         <div class="modal-header bg-gradient-success text-white">
+                             <h5 class="modal-title" id="exampleModalLongTitle">
+                                 Add New Category
+                             </h5>
+                             <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                                 <span aria-hidden="true"><i class="fas fa-times text-white"></i></span>
+                             </button>
+                         </div>
+ 
+                         <!-- New Product Modal -->
+                         <div class="modal-body">
+                             <form method="POST" action="{% url 'super:category-list' %}">
+                              {% csrf_token %}
+                               <div class="form-group">
+                                   <label for="Productcategory">Category Name</label>
+                                   {{form_cat.name}}
+                               </div>
+
+                               <hr class="divider">
+                               <div class="d-flex justify-content-end">
+   
+                                   <!-- Navigate to other Categories -->
+                                   <a href="{% url 'super:category-list' %}" type="button" class="small btn btn-success my-2 mr-3">
+                                       <i class="fas fa-edit"></i>
+                                       Edit</a>
+
+                                       <!-- Submit button -->
+                                   <button name="catBtn" class="small btn btn-success my-2">
+                                       <i class="fas fa-file"></i>
+                                       Save</button>
+                               </div>
+                             </form>
+                         </div>
+ 
+                     </div>
+                 </div>
+             
+                 </div>
+                 <!-- New item modal End -->
+
+                 <!-- New Product type Modal Start -->
+                  <!-- New Item Modal Button-->
+                  <div class="modal fade" id="exampleModalType" tabindex="-1" role="dialog"
+                  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header bg-success text-white">
+                              <h5 class="modal-title" id="exampleModalLongTitle">
+                                  Add New Product Type
+                              </h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                                  <span aria-hidden="true"><i class="fas fa-times text-white"></i></span>
+                              </button>
+                          </div>
+  
+                          <!-- New Product Modal -->
+                          <div class="modal-body">
+                              <form method="POST" action="{% url 'super:product-list' %}">
+                                {% csrf_token %}
+                                  <div class="form-group">
+                                      <label for="ProductType">Type of Product</label>
+                                      {{form_type.name}}
+                                  </div>
+                                  <hr class="divider">
+                                  <div class="d-flex justify-content-end">
+      
+                                      <!-- Navigate to other Categories -->
+                                      <a href="{% url 'super:type-list' %}" type="button" class="small btn btn-success my-2 mr-3">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                     </a>
+
+                                           <!-- Submit button -->
+                                       <button name="typeBtn" class="small btn btn-success my-2" data-toggle="modal">
+                                           <i class="fas fa-file"></i>
+                                           Save</button>
+                                  </div>
+                              </form>
+  
+                           
+  
+                              
+                          </div>
+  
+                      </div>
+                  </div>
+              
+                  </div>
+                  <!-- New Product type Modal End -->
+
+                <!-- New Item Modal Button-->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gradient-success text-white">
+                            <h5 class="modal-title" id="exampleModalLongTitle">
+                                Add New Product
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                                <span aria-hidden="true"><i class="fas fa-times text-white"></i></span>
+                            </button>
+                        </div>
+
+                        <!-- New Product Modal -->
+                        <div class="modal-body">
+                            <form method="POST">
+                              {% csrf_token %}
+                              
+                                <div class="form-group">
+                                    <label for="Productname">Product Name</label>
+                                    {{product_form.product_name}}
+                                  
+                                </div>
+                                <div class="form-group">
+                                    <label for="ProductID">Product ID</label>
+                                    {{product_form.custom_id}}
+                                    
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Productname">Product Type</label>
+                                    <br>
+                                    <span class="">
+                                      {{product_form.product_type}}
+                                        
+                                    </span>
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label for="Productname">Product Category</label>
+                                    <br>
+                                    <span class="">
+                                        {{product_form.product_category}}
+                                        
+                                    </span>
+                                    
+                                </div>
+
+                                
+                                
+                                
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label for="Quantity">Quantity on Hand</label>
+                                            <div class="input-group mb-2">
+                                                {{product_form.quantity_available}}
+                                                
+                                            </div>
+                                        </div>
+
+                                        
+                                    </div>
+                                </div>
+
+                                <!-- Prices -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <!-- Cost Price -->
+                                        
+                                        <div class="col-sm-6">
+                                            <label for="Quantity">Cost Price </label>
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        &#8358;
+                                                    </div>
+                                                </div>
+                                                {{product_form.cost_price}}
+                                            </div>
+                                        </div>
+
+                                        <!-- Selling Price -->
+                                        <div class="col-sm-6">
+                                            <label for="Quantity">Selling Price</label>
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        &#8358;
+                                                    </div>
+                                                </div>
+                                                {{product_form.sales_price}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="form-group">
+                                    <label for="ProductMeasuement">Product Measurement</label>
+                                    {{product_form.product_measurement}}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="ProductDescription">Product description</label>
+                                    {{product_form.product_description}}
+                                </div>
+
+                                <hr class="divider">
+                                <div class="d-flex justify-content-end">
+                                    <button name="productBtn" class="small btn btn-success my-2" data-toggle="modal">
+                                           <i class="fas fa-file"></i>
+                                           Save</button>
+                                </div>
+                                
+
+                                
+                            </form>
+
+                         
+
+                            
+                        </div>
+
+                    </div>
+                </div>
+            
+                </div>
+
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 bg-gradient-success">
+                        <h6 class="m-0 font-weight-bold text-white">Product Datatable</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table py-4" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Product Name</th>
+                                        <th class="text-center">Product ID</th>
+                                        <th class="text-center">Product Category</th>
+                                        <th class="text-center">Product Type</th>
+                                        <th class="text-center">Quantity</th>
+                                        <th class="text-center">Cost Price</th>
+                                        <th class="text-center">Sales Price</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                        
+                                <tbody>
+                                   {% for product in products %}
+                                    <tr> 
+                                        <td class="text-center">{{forloop.counter}}</td>
+                                        <td class="text-center"><a href="{% url 'super:product-detail' product.product_id %}">{{product.product_name}}</a></td>
+                                        <td class="text-center">{{product.custom_id}}</td>
+                                        <td class="text-center">{{product.product_category.name}}</td>
+                                        <td class="text-center">{{product.product_type.name}}</td>
+                                        <td class="text-center">{{product.quantity_available}}</td>
+                                        
+                                        <td class="text-center">&#8358; {{product.cost_price}}</td> 
+                                        <td class="text-center">&#8358; {{product.sales_price}}</td> 
+                                        {% if request.user.profile.position == 'manager' %}
+                                        <td class="text-center">
+                                            <a href="{% url 'super:product-edit' product.product_id %}">
+                                                <i class="fas fa-edit"></i>
+                                                Edit
+                                            </a> 
+                                            
+                                        </td>
+                                        {% else %}
+                                        <td>
+                                           <a href="">
+                                               <i></i>
+                                           </a>
+                                        </td>
+                                        {% endif %}
+
+                                        {% if request.user.profile.position == 'manager' %}
+                                        <td>
+                                           <a class="text-danger" href="{% url 'super:product-delete' product.product_id %}">
+                                               <i class="fas fa-trash"></i>
+                                           </a>
+                                        </td>
+                                        {% else %}
+                                        <td>
+                                           <a href="">
+                                               <i></i>
+                                           </a>
+                                        </td>
+                                        {% endif %}
+                                    </tr>
+
+                                    {% endfor %}
+
+                                    
+                                </tbody>
+                            </table>
+            </div>
+            
+            <!-- /.container-fluid -->
+                    
+  
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- For Logout Popup -->
+
+    {% include 'logout_popup.html' %}
+
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+    </script>
+
+
+    <!-- Bootstrap core JavaScript-->
+<script src="{% static 'sb-bootstrap/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'sb-bootstrap/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+
+<!-- Custom Select JS -->
+<script src="{% static 'select2/dist/js/select2.min.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'sb-bootstrap/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'sb-bootstrap\js\sb-admin-2.js' %}"></script>
+
+
+<!-- Page level plugins -->
+<script src="{% static 'sb-bootstrap/vendor/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'sb-bootstrap/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'sb-bootstrap/js/demo/datatables-demo.js' %}"></script>
+
+
+<!--  <script src="{% static 'sb-bootstrap\js\sb-admin-2.js' %}"></script> -->
+
+
+</body>
+
+</html>

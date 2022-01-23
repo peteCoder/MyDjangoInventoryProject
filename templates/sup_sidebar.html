@@ -1,0 +1,131 @@
+{% load static %}
+
+
+<!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'super:dashboard' %}">
+                <div class="sidebar-brand-icon">
+                    <img src="{% static 'sb-bootstrap/img/rx 3 favicon.png' %}"width="50">
+                </div>
+                <div class="sidebar-brand-text mx-3">OVBIOISE<sup></sup></div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'super:dashboard' %}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'super:inventory' %}">
+                    <i class="fas fa-fw fa-list-alt"></i>
+                    <span>Inventory</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0 ">
+
+            <!-- Nav Item - Sales -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'super:sales' %}">
+                    <i class="fas fa-fw fa-hand-holding-usd"></i>
+                    <span>Sales</span></a>
+            </li>
+
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Transaction -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'super:transaction' %}">
+                    <i class="fas fa-fw fa-hand-holding-usd"></i>
+                    <span>Transaction</span></a>
+            </li>
+
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Procurement -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'super:procurement' %}">
+                    <i class="fas fa-print"></i>
+                    <span>Stock</span></a>
+            </li>
+
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Medicine List -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'super:product-list' %}">
+                    <i class="fas fa-fw fa-clipboard-list"></i>
+                    <span>Products' List</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+           
+
+            <!-- Nav Item - Recieving-->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'super:expired-list' %}">
+                    <i class="far fa-fw fa-calendar-alt"></i>
+                    <span>Expired List</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+            {% if request.user.profile.position == 'manager' %}
+            <!-- Nav Item - Recieving-->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'super:add-supplier' %}">
+                    <i class="fas fa-fw fa-dolly"></i>
+                    <span>Suppliers</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Recieving-->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'super:add-customer' %}">
+                    <i class="fas fa-fw fa-address-card"></i>
+                    <span>Customers</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            {% endif %}
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+            {% if request.user.profile.position == 'cashier' %}
+
+            <!-- Sidebar Message -->
+            <div class="sidebar-card">
+                <img class="sidebar-card-illustration mb-2" src="{% static 'sb-bootstrap/img/undraw_rocket.svg' %}" alt="Rocket">
+                <a class="btn btn-success btn-sm" href="{% url 'super:pos' %}">Make a Sale!</a>
+            </div>
+
+            {% else %}
+            <div class="sidebar-card">
+                <img class="sidebar-card-illustration mb-2" src="{% static 'sb-bootstrap/img/undraw_rocket.svg' %}" alt="Rocket">
+                <a class="btn btn-success btn-sm" href="{% url 'super:receiving' %}">Receiving</a>
+            </div>
+            {% endif %}
+            
+
+        </ul>
+        <!-- End of Sidebar -->

@@ -1,0 +1,23 @@
+.small {
+    font-size: 14px !important;
+}
+
+table, tr {
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.border_left_warning {
+    border-left: 2px solid rgb(253, 253, 104) !important;
+    z-index: 1;
+    width: 10px;
+}
+
+.xtra-small {
+    font-size: 14px !important;
+    font-weight: 300 !important;
+}
+
+.bold {
+    font-weight: bold;
+}

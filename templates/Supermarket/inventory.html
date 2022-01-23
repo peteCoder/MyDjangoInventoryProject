@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Inventory</title>
+
+    <link rel="icon" href="{% static 'sb-bootstrap/img/rx 3 favicon1.png' %}">
+
+    <!-- custom css style -->
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/css/inventory.css' %}"> 
+
+    <!-- custom css style for product -->
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/css/product.css' %}">
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'sb-bootstrap/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'sb-bootstrap/css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2.css' %}">
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2-bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/custom.css' %}">
+
+    <script src="{% static 'sb-bootstrap/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'select2/dist/js/select2.js' %}"></script>
+
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+    {% include 'sup_sidebar.html' %}
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+        {% include 'sup_navbar.html' %}
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    {% if messages %}
+                    {% for message in messages %}
+                      <div class="{{message.tags}}" style="font-size: 14px;">
+                        {{message}}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                  <br/>
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800 font-weight-bold">
+                            Inventory
+                        </h1>
+                    </div>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div class="container-fluid">
+                
+
+                <div class="d-flex justify-content-end">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button name="PDFInventoryListButton" class="small btn btn-primary my-2">
+                            <i class="fas fa-print"></i>
+                            Print Inventory List
+                        </button>
+                    </form>
+                    
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button name="csvDownload" class="small btn btn-success my-2 ml-3">
+                        <i class="fas fa-share-square"></i>Export to CSV</button>
+                    </form>
+                    
+                </div>
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 bg-gradient-success">
+                        <h6 class="m-0 font-weight-bold text-white">Inventory Datatable</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table py-4" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Product Name</th>
+                                        <th class="text-center">Product ID</th>
+                                        <th class="text-center">Product Category</th>
+                                        <th class="text-center">Quantity on hand</th>
+                                        
+                                        <th class="text-center">Cost Price</th>
+                                        <th class="text-center">Sales Price</th>
+                                    </tr>
+                                </thead>
+                        
+                                <tbody>
+                                    
+
+                                    {% for product in products %}
+                                    <tr class={{product.class_of_low_and_empty}}> 
+                                        <td class="text-center">{{forloop.counter}}</td>
+                                        <td class="text-center">{{product.product_name}}</td>
+                                        <td class="text-center">{{product.custom_id}}</td>
+                                        <td class="text-center">{{product.product_category.name}}</td>
+                                        <td class="text-center">{{product.quantity_available}}</td>
+                                        
+                                        <td class="text-center">&#8358; {{product.cost_price}}</td> 
+                                        <td class="text-center">&#8358; {{product.sales_price}}</td> 
+                                    </tr>
+                                    {% endfor %}
+
+                                    
+                                </tbody>
+                            </table>
+                            <div class="mt-4">
+                                <p class="text-muted xtra-small">
+                                    <i class="fas fa-circle text-warning"></i> &nbsp;Low Stock</p>
+                                <p class="text-muted xtra-small">
+                                    <i class="fas fa-circle text-danger"></i> &nbsp;Empty Stock</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+                <!-- /.container-fluid -->
+                    
+  
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- For Logout Popup -->
+
+    {% include 'logout_popup.html' %}
+
+
+
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+    </script>
+
+
+    <!-- Bootstrap core JavaScript-->
+<script src="{% static 'sb-bootstrap/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'sb-bootstrap/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+
+<!-- Custom Select JS -->
+<script src="{% static 'select2/dist/js/select2.min.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'sb-bootstrap/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'sb-bootstrap\js\sb-admin-2.js' %}"></script>
+
+
+<!-- Page level plugins -->
+<script src="{% static 'sb-bootstrap/vendor/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'sb-bootstrap/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'sb-bootstrap/js/demo/datatables-demo.js' %}"></script>
+
+
+<!--  <script src="{% static 'sb-bootstrap\js\sb-admin-2.js' %}"></script> -->
+
+</body>
+
+</html>

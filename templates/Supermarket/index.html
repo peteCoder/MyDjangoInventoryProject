@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard</title>
+
+    <link rel="icon" href="{% static 'sb-bootstrap/img/rx 3 favicon1.png' %}">
+
+    <!-- custom css style -->
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/css/inventory.css' %}"> 
+
+    <!-- custom css style for product -->
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/css/product.css' %}">
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'sb-bootstrap/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'sb-bootstrap/css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2.css' %}">
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2-bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/custom.css' %}">
+
+    <script src="{% static 'sb-bootstrap/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'select2/dist/js/select2.js' %}"></script>
+
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        {% include 'sup_sidebar.html' %}
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                {% include 'sup_navbar.html' %}
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    {% if messages %}
+                    {% for message in messages %}
+                      <div class="{{message.tags}}" style="font-size: 14px;">
+                        {{message}}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                  <br/>
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800 font-weight-bold">
+                            Dashboard
+                        </h1>
+                    </div>
+                
+                <!-- content row -->
+                <div class="row">
+                    <!-- Welcome card -->
+                    <div class="col-xl-12 col-md-12 col-sm-12 mb-4">
+                        <div class="card  h-100 py-2 welcome-card bg-gradient-success">
+                            <div class="card-body text-white px-5 py-5">
+                               <div class="row">
+                                   <div>
+                                    <h2 style="font-size: 1.38rem;">Welcome</h2>
+                                    <h2>{{ position }} {{ user.profile.first_name.title }} {{ user.profile.last_name.title }}</h2>
+                                   </div>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                    <div class="row">
+                        
+                            
+                                {% if products %}
+                                    <div class="col-md-8 col-sm-12 col-lg-8 mb-3">
+                                    <div class="card">
+                                         <!-- Card Header - Dropdown -->
+                                        <div
+                                         class="card-header bg-success card-table-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                         <h6 class="m-0 font-weight-bold text-white">Upcoming Expired Products</h6>
+                                         <div class="dropdown no-arrow">
+                                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                 <i class="fas fa-arrow-right fa-sm fa-fw text-white"></i>
+                                             </a>
+                                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                 aria-labelledby="dropdownMenuLink">
+                                                 <a class="dropdown-item" href="{% url 'super:expired-list' %}">View Expired Products</a>
+                                             </div>
+                                         </div>
+                                     </div>
+                                        <div class="card-body py-0 px-0">
+                                            <div class="table-responsive">
+                                                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-muted text-center light-weight">Product Name</th>
+                                                            <th class="text-muted text-center light-weight">Quantity</th>
+                                                            <th class="text-muted text-center light-weight">Expiry Date</th>
+                                                            <th class="text-muted text-center light-weight">Cost Price</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for product in products %}
+                                                        <tr class="{{product.dashboard_product_has_expired}} shadow h-50">
+                                                            <td class="text-center">
+                                                                <a href="{% url 'super:expired-list' %}">
+                                                                    {{product.product_name}}
+                                                                </a>
+                                                            </td>
+                                                            <td  class="text-center">
+                                                                {{product.quantity_ordered}}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                {{product.expiry_date_format}}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                &#8358;{{product.price}}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <a href="{% url 'super:expired-list' %}">
+                                                                    <i class="fas fa-calendar-alt"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                        {% endfor %}
+
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                {% else %}
+
+
+
+                                    <div  class="col-md-8 col-sm-12 col-lg-8 mb-3">
+                                        <div class="card">
+                                         <!-- Card Header - Dropdown -->
+                                        <div
+                                         class="card-header bg-success card-table-header py-3 d-flex flex-row align-items-center justify-content-end">
+                                         <h6 class="m-0 font-weight-bold text-white">Check for Expired Products</h6>
+                                         <div class="dropdown pl-4 no-arrow">
+                                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                 <i class="fas fa-arrow-right fa-sm fa-fw text-white"></i>
+                                             </a>
+                                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                 aria-labelledby="dropdownMenuLink">
+                                                 <a class="dropdown-item" href="{% url 'super:expired-list' %}">View Expired Products</a>
+                                             </div>
+                                         </div>
+                                     </div>
+                                        <div class="card-body py-0 px-0">
+                                            <div class="table-responsive">
+                                                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-muted text-center">No Upcoming Expired Porducts</th>
+                                                        </tr>
+                                                    </thead>
+
+                                                </table>
+                                                
+                                            </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+
+                            {% endif %}
+
+                            <!-- Appoimtments Counter - Up -->
+                        <div class="col-xl-4 col-lg-3 col-md-4">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header card-table-header py-3 d-flex flex-row align-items-center justify-content-between bg-success">
+                                    <h6 class="m-0 font-weight-bold text-white">Number of Transactions</h6>
+                                </div>
+
+                                <div class="card-body"> 
+                                    <!-- Content Row -->
+                                    <div class="row">
+                
+                                        <!-- Earnings (Monthly) Card Example -->
+                                        <div class="col-xl-12 col-md-12 mb-4">
+                                            <div class="card border-left-primary shadow h-100 py-2">
+                                                <div class="card-body">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col mr-2">
+                                                            <div class="text-xs text-center font-weight-bold text-success text-uppercase mb-1">
+                                                                Total Count of Transactions</div>
+                                                            <div class="h5 mb-0 text-center font-weight-bold text-gray-800">{{all_transactions}}</div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <i class="fas fa-chart-area fa-2x text-gray-300"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-12 col-md-12 mb-4">
+                                            <div class="card border-left-success shadow h-100 py-2">
+                                                <div class="card-body">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col mr-2">
+                                                            <div class="text-xs text-center font-weight-bold text-success text-uppercase mb-1">
+                                                                Today's Transactions</div>
+                                                            <div class="h5 mb-0 text-center font-weight-bold text-gray-800">{{today_transactions}}</div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <i class="fas fa-chart-area fa-2x text-gray-300"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-xl-12 col-md-12 mb-4">
+                                            <div class="card border-left-warning shadow h-100 py-2">
+                                                <div class="card-body">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col mr-2">
+                                                            <div class="text-xs text-center font-weight-bold text-success text-uppercase mb-1">
+                                                                Yesterday's Transactions</div>
+                                                            <div class="h5 mb-0 text-center font-weight-bold text-gray-800">{{yesterday_transactions}}</div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <i class="fas fa-chart-area fa-2x text-gray-300"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Products Out of Stock -->
+                        {% if products_out_of_stock %}
+                                <div class="col-md-8 col-sm-12 col-lg-8 mb-3">
+                                    <div class="card">
+                                         <!-- Card Header - Dropdown -->
+                                        <div
+                                         class="card-header bg-success card-table-header py-3 d-flex flex-row align-items-center justify-content-end">
+                                         <h6 class="m-0 font-weight-bold text-white">Products Out of Stock</h6>
+                                         <div class="dropdown no-arrow">
+                                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                 <i class="fas fa-arrow-right fa-sm fa-fw text-white"></i>
+                                             </a>
+                                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                 aria-labelledby="dropdownMenuLink">
+                                                 <a class="dropdown-item" href="{% url 'super:inventory' %}">View Inventory</a>
+                                             </div>
+                                         </div>
+                                     </div>
+                                        <div class="card-body py-0 px-0">
+                                            <div class="table-responsive">
+                                                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-muted text-center light-weight">Product Name</th>
+                                                            <th class="text-muted text-center light-weight">Quantity at hand</th>
+                                                            <th class="text-muted text-center light-weight">Cost Price</th>
+                                                            <th class="text-muted text-center light-weight">Sales Price</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for product in products_out_of_stock %}
+                                                        <tr class="{{product.dashboard_product_has_expired}} shadow h-50">
+                                                            <td class="text-center">
+                                                                <a href="{% url 'super:inventory' %}">
+                                                                    {{product.product_name}}
+                                                                </a>
+                                                            </td>
+                                                            <td  class="text-center">
+                                                                {{product.quantity_available}}
+                                                            </td>
+                                                            
+                                                            <td class="text-center">
+                                                                &#8358; {{product.cost_price}}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                &#8358;{{product.sales_price}}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <a href="{% url 'super:inventory' %}">
+                                                                    <i class="fas fa-calendar-alt"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                        {% endfor %}
+
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+
+                            {% else %}
+
+                                    <div  class="col-md-8 col-sm-12 col-lg-8 mb-3">
+                                        <div class="card">
+                                         <!-- Card Header - Dropdown -->
+                                        <div
+                                         class="card-header bg-success card-table-header py-3 d-flex flex-row align-items-center justify-content-end">
+                                         <h6 class="m-0 font-weight-bold text-white">Check Inventory for Products Out of Stock</h6>
+                                         <div class="dropdown pl-4 no-arrow">
+                                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                 <i class="fas fa-arrow-right fa-sm fa-fw text-white"></i>
+                                             </a>
+                                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                 aria-labelledby="dropdownMenuLink">
+                                                 <a class="dropdown-item" href="{% url 'super:inventory' %}">View Inventory</a>
+                                             </div>
+                                         </div>
+                                     </div>
+                                        <div class="card-body py-0 px-0">
+                                            <div class="table-responsive">
+                                                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-muted text-center">No Products Out of Stock</th>
+                                                        </tr>
+                                                    </thead>
+
+                                                </table>
+                                                
+                                            </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+
+                            {% endif %}
+
+
+                               <!-- Appoimtments Counter - Up -->
+                        <div class="col-xl-4 col-lg-3 col-md-4">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header card-table-header py-3 d-flex flex-row align-items-center justify-content-between bg-success">
+                                    <h6 class="m-0 font-weight-bold text-white">Transactions</h6>
+                                </div>
+
+                                <div class="card-body"> 
+                                    <!-- Content Row -->
+                                    <div class="row">
+                
+                                        <!-- Earnings (Monthly) Card Example -->
+                                        <div class="col-xl-12 col-md-12 mb-4">
+                                            <div class="card border-left-primary shadow h-100 py-2">
+                                                <div class="card-body">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col mr-2">
+                                                            <div class="text-xs text-center font-weight-bold text-success text-uppercase mb-1">
+                                                                Today's Total Purchase</div>
+                                                            <div class="h5 mb-0 text-center font-weight-bold text-gray-800">&#8358;{{total_daily_purchase}}</div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-12 col-md-12 mb-4">
+                                            <div class="card border-left-success shadow h-100 py-2">
+                                                <div class="card-body">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col mr-2">
+                                                            <div class="text-xs text-center font-weight-bold text-success text-uppercase mb-1">
+                                                                Today's Total Sales</div>
+                                                            <div class="h5 mb-0 text-center font-weight-bold text-gray-800">&#8358;{{total_daily_sales}}</div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-xl-12 col-md-12 mb-4">
+                                            <div class="card border-left-warning shadow h-100 py-2">
+                                                <div class="card-body">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col mr-2">
+                                                            <div class="text-xs text-center font-weight-bold text-success text-uppercase mb-1">
+                                                                Yesterday's Total Purchase</div>
+                                                            <div class="h5 mb-0 text-center font-weight-bold text-gray-800">&#8358;{{yesterday_purchase_total}}</div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-12 col-md-12 mb-4">
+                                            <div class="card border-left-warning shadow h-100 py-2">
+                                                <div class="card-body">
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col mr-2">
+                                                            <div class="text-xs text-center font-weight-bold text-success text-uppercase mb-1">
+                                                                Yesterday's Total Sales</div>
+                                                            <div class="h5 mb-0 text-center font-weight-bold text-gray-800">&#8358;{{yesterday_sales_total}}</div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                            
+
+                        
+                    </div>
+                </div>
+
+
+
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; ktc 2021</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- For Logout Popup -->
+
+    {% include 'logout_popup.html' %}
+
+    <!-- Bootstrap core JavaScript-->
+<script src="{% static 'sb-bootstrap/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'sb-bootstrap/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+
+<!-- Custom Select JS -->
+<script src="{% static 'select2/dist/js/select2.min.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'sb-bootstrap/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'sb-bootstrap\js\sb-admin-2.js' %}"></script>
+
+
+<!-- Page level plugins -->
+<script src="{% static 'sb-bootstrap/vendor/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'sb-bootstrap/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'sb-bootstrap/js/demo/datatables-demo.js"></script>
+
+
+<!--  <script src="{% static 'sb-bootstrap\js\sb-admin-2.js' %}"></script> -->
+
+
+</body>
+
+</html>

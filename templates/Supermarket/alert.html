@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Alerts</title>
+    <link rel="icon" href="{% static 'sb-bootstrap/img/rx 3 favicon1.png' %}">
+
+    <!-- custom css style -->
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/css/inventory.css' %}"> 
+
+    <!-- custom css style for product -->
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/css/product.css' %}">
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'sb-bootstrap/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'sb-bootstrap/css/sb-admin-2.min.css' %}" rel="stylesheet">
+    
+
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2.css' %}">
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2-bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/custom.css' %}">
+    <script src="{% static 'sb-bootstrap/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'select2/dist/js/select2.js' %}"></script>
+
+
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+       <!-- Sidebar -->
+        {% include 'sup_sidebar.html' %}
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                {% include 'sup_navbar.html' %}
+
+                <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                    {% if messages %}
+                    {% for message in messages %}
+                      <div class="{{message.tags}}" style="font-size: 14px;">
+                        {{message}}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                  <br/>
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800 font-weight-bold">
+                            Alerts
+                        </h1>
+                    </div>
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">  
+
+               <!-- Alert Cards -->
+               <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-gradient-success">
+                    <h6 class="m-0 font-weight-bold text-white">Alert center</h6>
+                </div>
+
+                <div class="card-body">
+
+                    
+                    <div class="row">
+                        {% for notify in notifications %}
+                        
+
+
+                            {% if notify.notification_type == 1 %}
+
+                            <!-- Expired items card -->
+                            <div class="col-xl-12 col-md-12 mb-4">
+                                <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <div class="mr-3">
+                                                    <div class="icon-circle bg-warning">
+                                                        <i class="fas fa-exclamation-triangle text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-xs font-weight-bold text-danger text-uppercase">
+                                                        WARNING!</div>
+                                                    {{notify.text_preview}} 
+                                                    <div class="small text-gray-500">
+                                                        <i class="fas fa-calendar-alt"></i>
+                                                        {{notify.date_of_action}}
+                                                        
+                                                        <span class="my-2">
+                                                            <i class="fas fa-clock"></i>
+                                                            
+                                                        </span>
+                                                    </div>
+                                                        
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="small text-gray-500 mt-n4 d-flex justify-content-end">
+                                            
+                                            <a class="btn-sm" href="{% url 'super:expired-list' %}">
+                                                view
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% endif %}
+                            
+
+
+                            <!-- out of stock item -->
+                            {% if  notify.notification_type == 2 %}
+                            <div class="col-xl-12 col-md-12 mb-4">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <div class="mr-3">
+                                                    <div class="icon-circle bg-success">
+                                                        
+                                                        <i class="fas fa-luggage-cart text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    {{notify.text_preview}}
+                                                    <div class="small text-gray-500">
+                                                        <i class="fas fa-calendar-alt"></i>
+                                                        {{notify.date}}
+                                                        
+                                                        <span class="my-2">
+                                                            <i class="fas fa-clock"></i>
+                                                            
+                                                        </span>
+                                                    </div>
+                                                        
+                                                        
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="small text-gray-500 mt-n4 d-flex justify-content-end">
+                                        
+                                            <a class="btn-sm" href="{% url 'super:inventory' %}">
+                                                view
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+
+
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- End of Content Wrapper -->
+                </div>
+                <!-- End of container fluid -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+     
+
+    {% include 'logout_popup.html' %}
+
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-category').select2();
+        });
+
+        $(document).ready(function() {
+            $('.js-type-single').select2();
+        });
+    </script>
+
+
+    <!-- Bootstrap core JavaScript-->
+<script src="{% static 'sb-bootstrap/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'sb-bootstrap/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+
+<!-- Custom Select JS -->
+<script src="{% static 'select2/dist/js/select2.min.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'sb-bootstrap/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'sb-bootstrap\js\sb-admin-2.js' %}"></script>
+
+
+<!-- Page level plugins -->
+<script src="{% static 'sb-bootstrap/vendor/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'sb-bootstrap/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'sb-bootstrap/js/demo/datatables-demo.js' %}"></script>
+
+
+<!--  <script src="{% static 'sb-bootstrap\js\sb-admin-2.js' %}"></script> -->
+
+
+</body>
+
+</html>

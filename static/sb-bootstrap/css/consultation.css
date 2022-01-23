@@ -1,0 +1,25 @@
+
+
+.contents > ul {
+    list-style: none;
+}
+
+.list-group, li, span {
+    font-weight: 500;
+}
+
+.card{
+    border-radius: 50%;
+}
+
+.front {
+    position: relative;
+    height: 90px;
+    background: blue;
+    border-radius: 0 0 30px 30px;
+}
+
+.img-container {
+    position: relative;
+    margin-top: -60px;
+}

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Edit Product</title>
+
+    <link rel="icon" href="{% static 'sb-bootstrap/img/rx 3 favicon1.png' %}">
+
+    <!-- custom css style -->
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/css/inventory.css' %}"> 
+
+    <!-- custom css style for product -->
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/css/product.css' %}">
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'sb-bootstrap/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'sb-bootstrap/css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2.css' %}">
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2-bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/custom.css' %}">
+
+    <script src="{% static 'sb-bootstrap/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'select2/dist/js/select2.js' %}"></script>
+
+
+    <style type="text/css">
+        #saveBtn{
+            margin: 0;
+        }
+    </style>
+
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+    {% include 'sup_sidebar.html' %}
+
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+        {% include 'sup_navbar.html' %}
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    {% if messages %}
+                    {% for message in messages %}
+                      <div class="{{message.tags}}" style="font-size: 14px;">
+                        {{message}}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                  <br/>
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 font-weight-bold text-gray-800">
+                            Edit Product
+                        </h1>
+                    </div>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+
+            <div class="container-fluid">
+
+                
+                <div class="col-lg-12">
+                    {% if form.errors %}
+                    {% for field in form %}
+                    {% for error in field.errors %}
+                        <p style="color: red; line-height: 1px; font-size: 14px; text-align: center">{{error|escape}}</p>
+                    {% endfor %}
+
+                    {% endfor %}
+                    
+                    {% endif %}
+                    <div class="row">
+                        <!-- FORM Panel -->
+                        <div class="col-md-8">
+                            <!-- New Product Modal -->
+                        <div class="modal-body">
+                            <form method="POST">
+                              {% csrf_token %}
+                              
+                                <div class="form-group">
+                                    <label for="Productname">Product Name</label>
+                                    {{form.product_name}}
+                                  
+                                </div>
+                                <div class="form-group">
+                                    <label for="ProductID">Product ID</label>
+                                    {{form.custom_id}}
+                                    
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Productname">Product Type</label>
+                                    <br>
+                                    <span class="">
+                                      {{form.product_type}}
+                                    </span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Productname">Product Category</label>
+                                    <br>
+                                    <span class="">
+                                        {{form.product_category}}
+                                    </span>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label for="Quantity">Quantity Available</label>
+                                            <div class="input-group mb-2">
+                                                {{form.quantity_available}}
+                                            </div>
+                                        </div>
+
+                                        
+                                    </div>
+                                </div>
+                                <!-- Prices -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <!-- Cost Price -->
+                                        <div class="col-sm-6">
+                                            <label for="Quantity">Cost Price </label>
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        &#8358;
+                                                    </div>
+                                                </div>
+                                                {{form.cost_price}}
+                                            </div>
+                                        </div>
+                                        <!-- Selling Price -->
+                                        <div class="col-sm-6">
+                                            <label for="Quantity">Selling Price</label>
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        &#8358;
+                                                    </div>
+                                                </div>
+                                                {{form.sales_price}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ProductMeasuement">Product Measurement</label>
+                                    {{form.product_measurement}}
+                                </div>
+                                <div class="form-group">
+                                    <label for="ProductDescription">Product description</label>
+                                    {{form.product_description}}
+                                </div>
+                                <div class="row">
+                                  <!--  -->
+                                <hr class="divider">
+                                <div class="d-flex justify-content-end">
+                                    <button class="small btn btn-success my-2">
+                                        <i class="fas fa-file"></i>
+                                        Save
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+                        <!-- FORM Panel -->
+            
+                        
+
+             
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+     
+
+    <!-- For Logout Popup -->
+
+    {% include 'logout_popup.html' %}
+
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+    </script>
+
+
+    <!-- Bootstrap core JavaScript-->
+<script src="{% static 'sb-bootstrap/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'sb-bootstrap/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+
+<!-- Custom Select JS -->
+<script src="{% static 'select2/dist/js/select2.min.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'sb-bootstrap/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'sb-bootstrap\js\sb-admin-2.js' %}"></script>
+
+
+<!-- Page level plugins -->
+<script src="{% static 'sb-bootstrap/vendor/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'sb-bootstrap/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'sb-bootstrap/js/demo/datatables-demo.js' %}"></script>
+
+
+<!--  <script src="{% static 'sb-bootstrap\js\sb-admin-2.js' %}"></script> -->
+
+
+</body>
+
+</html>

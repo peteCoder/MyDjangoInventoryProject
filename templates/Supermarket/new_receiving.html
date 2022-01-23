@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>New Receiving</title>
+
+    <link rel="icon" href="{% static 'sb-bootstrap/img/rx 3 favicon1.png' %}">
+
+    <!-- custom css style -->
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/css/inventory.css' %}"> 
+
+    <!-- custom css style for product -->
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/css/product.css' %}">
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'sb-bootstrap/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'sb-bootstrap/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'sb-bootstrap/css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2.css' %}">
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2-bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/custom.css' %}">
+
+    <script src="{% static 'sb-bootstrap/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'select2/dist/js/select2.js' %}"></script>
+
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+       <!-- Topbar -->
+        {% include 'sup_sidebar.html' %}
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+        {% include 'sup_navbar.html' %}
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div class="{{message.tags}}" style="font-size: 14px;">
+                        {{message}}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                  <br/>
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800 font-weight-bold">
+                            Receiving
+                        </h1>
+                    </div>
+
+        <!-- Content Wrapper -->
+        <div>
+            <!--  -->
+                <!-- Sales -->
+            
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 bg-gradient-success">
+                        <h6 class="m-0 font-weight-bold text-white">New Supply</h6>
+                    </div>
+                    <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% if form.errors %}
+                          {% for field in form %}
+                            {% for error in field.errors %}
+                                <p style="color: red; line-height: 1px; font-size: 14px; text-align: center">{{error|escape}}</p>
+                            {% endfor %}
+
+                          {% endfor %}
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-sm-6 col-lg-6 mb-2">
+                                <label for="selectCustomer">Select Supplier</label>
+                                <br>
+                                <span class="">
+                                    {{form.supplier}}
+                                    
+                                </span>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-6">
+                                <label
+                                style="color: var(--pink);">
+                                   Expiry Date
+                                </label>
+                                {{form.expiry_date}}                    
+                            </div>
+                        </div>
+
+
+                        <hr class="divider">
+
+                        <div class="row pb-4">
+
+                            <!-- Select Product -->
+                            <div class="col-sm-6 col-lg-6 mb-2">
+                                <label
+                                style="color: var(--pink);">
+                                    SELECT PRODUCT
+                                </label>
+                                
+                                {{form.product}}
+
+                                <span class="text-muted small">Search product in details</span>
+
+                            </div>
+
+                            <!-- Enter Quantity -->
+                            <div class="col-sm-6 col-lg-6">
+                                <label
+                                style="color: var(--pink);">
+                                   Quantity
+                                </label>
+                               
+                               {{form.quantity_ordered}}
+                               
+                            </div>
+
+
+
+
+                            <!-- Add btn -->
+                            <div class="col-sm-4 col-lg-12 col-md-12 mt-2">
+                                <button name="addToList" class="btn btn-success">
+                                    <i class="fas fa-plus"></i>
+                                    ADD TO LIST
+                                </button>
+
+                            </div>
+                        </div>
+                    </form>
+
+                    {% if purchases %}
+
+                        <div class="row table-responsive">
+                            <table class="table table-bordered py-4" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Product Name</th>
+                                        <th class="text-center">Expiry Date</th>
+                                        <th class="text-center">Product ID</th>
+                                        <th class="text-center">Quantity</th>
+                                        <th class="text-center">Price</th>
+                                        <th class="text-center">Amount</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                        
+                                <tbody>
+                                    {% for purchase in purchases %}
+                                    <tr> 
+                                        <td class="text-center">{{forloop.counter}}</td>
+                                        <td class="text-center">{{purchase.product.product_name}}</td>
+                                        <td class="text-center">{{purchase.expiry_date}}</td>
+                                        <td class="text-center">{{purchase.product.custom_id}}</td>
+                                        <td class="text-center">{{purchase.quantity_ordered}}</td>
+                                        <td class="text-center">&#8358;{{purchase.product.cost_price}}</td>
+
+                                        <td class="text-center">&#8358;{{purchase.individual_total}}</td>
+
+                                        <td class="text-center">
+                                           <a class="text-danger" href="{% url 'super:delete-purchase' purchase.pk %}">
+                                               <i class="fas fa-trash"></i>
+                                           </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+                                    
+                                    {% if purchases %}
+
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        
+                                        <td class="text-right text-success font-weight-bold">TOTAL QUANTITY</td>
+                                        <td class="text-center font-weight-bold">{{get_total_quantity}}</td>
+                                        <td class="text-right text-success font-weight-bold">TOTAL</td>
+                                        <td class="text-center font-weight-bold">&#8358;{{get_total}}</td>
+                                        <td></td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <hr class="divider">
+                        <div class="d-flex justify-content-end">
+                            <button data-toggle="modal"
+                            data-target="#pay_modal" class="btn btn-lg btn-outline-success font-weight-bold">
+                                <i class="fas fa-file-alt"></i>
+                                SAVE</button>
+                        </div>
+
+                        {% endif %}
+                
+            </div>
+
+
+
+
+            <div class="modal fade" id="pay_modal" role='dialog'>
+                <div class="modal-dialog modal-md" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                  </div>
+                  <form method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-group">
+                                <label for="" class="control-label">Total Amount</label>
+                                <input id="TotalAmount" type="text" name="total_amount" value="{{get_total}}" class="form-control text-right" readonly="">
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="control-label">Amount Paid</label>
+                                <input id="TotalAmountReceived" type="text" name="amount_received" value="{{get_total}}" class="form-control text-right" readonly="">
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="control-label">Discount Allowed</label>
+                                <input id="DisountReceived" type="number" name="discount" value="0" min="0" class="form-control text-right" >
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="control-label">Amount Tendered</label>
+                                <input id="AmountTendered" type="number" name="amount_tendered" value="0" min="0" class="form-control text-right" >
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="control-label">Change</label>
+                                <input id="Change"  type="number" name="change_given" value="0" min="0" class="form-control text-right" readonly="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button name="finalSubmit" class="btn btn-success" id='submit'>
+                          <i class="fa fa-hand-holding-usd"></i>
+                          Receive</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                  </form>
+
+
+                  </div>
+                </div>
+              </div>
+            
+            <!-- /.container-fluid -->
+  
+        </div>
+
+    
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+   <!-- For Logout Popup -->
+
+    {% include 'logout_popup.html' %}
+ 
+
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+
+        $(document).ready(function() {
+            $('.js-example-basic').select2();
+        });
+    </script>
+
+
+
+    <!-- Bootstrap core JavaScript-->
+<script src="{% static 'sb-bootstrap/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'sb-bootstrap/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+
+<!-- Custom Select JS -->
+<script src="{% static 'select2/dist/js/select2.min.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'sb-bootstrap/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'sb-bootstrap\js\sb-admin-2.js' %}"></script>
+
+
+<!-- Page level plugins -->
+<script src="{% static 'sb-bootstrap/vendor/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'sb-bootstrap/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'sb-bootstrap/js/demo/datatables-demo.js' %}"></script>
+
+
+<script type="text/javascript">
+    // TotalAmount AmountTendered
+    const Change = document.querySelector('#Change')
+    const totalAmount = document.querySelector('#TotalAmount')
+    const amountTendered = document.querySelector('#AmountTendered')
+    const amountReceived = document.querySelector('#TotalAmountReceived')
+    const discountReceived = document.querySelector('#DisountReceived')
+
+    amountTendered.oninput = () => {
+        var difference = amountTendered.value - amountReceived.value
+        Change.value = difference
+    }
+
+    discountReceived.oninput = () => {
+        if (discountReceived.value){
+            var difference = totalAmount.value - discountReceived.value
+            amountReceived.value = difference
+        }
+    }
+
+</script>
+
+<!--  <script src="{% static 'sb-bootstrap\js\sb-admin-2.js' %}"></script> -->
+
+
+
+</body>
+
+</html>
