@@ -1,1 +1,1 @@
-"# MyDjangoInventoryProject" 
+# INVENTORY PROJECT
