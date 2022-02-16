@@ -1,1 +1,1 @@
-#DjangoInventoryProject
+# Inventory Project
