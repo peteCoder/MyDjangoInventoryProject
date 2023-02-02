@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = ["*", "web-production-41e1.up.railway.app"]
 
-
+CSRF_TRUSTED_ORIGINS = ['https://web-production-41e1.up.railway.app']
 # Application definition
 
 INSTALLED_APPS = [
