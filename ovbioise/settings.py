@@ -26,9 +26,9 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ["*", "web-production-41e1.up.railway.app"]
+ALLOWED_HOSTS = ["*", "web-production-41e1.up.railway.app", 'inventory-management-system-chba.onrender.com']
 
-CSRF_TRUSTED_ORIGINS = ['https://web-production-e0e1.up.railway.app', ]
+CSRF_TRUSTED_ORIGINS = ['https://web-production-e0e1.up.railway.app', "https://inventory-management-system-chba.onrender.com"]
 # Application definition
 
 INSTALLED_APPS = [
